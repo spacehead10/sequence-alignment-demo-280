@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Dynamic Programming Demo.iml" filepath="$PROJECT_DIR$/Dynamic Programming Demo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Sequence Alignment Demo.iml" filepath="$PROJECT_DIR$/Sequence Alignment Demo.iml" />
     </modules>
   </component>
 </project>
