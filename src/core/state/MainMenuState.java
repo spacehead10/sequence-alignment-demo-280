@@ -1,5 +1,6 @@
 package core.state;
 
+import core.Main;
 import core.Media;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -30,6 +31,7 @@ public class MainMenuState extends BasicGameState {
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
+        sbg.enterState(Main.DOT_PLOT_ID); // Placeholder while exclusively working on dot plot demo
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {

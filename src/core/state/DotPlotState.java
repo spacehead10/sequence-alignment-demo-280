@@ -1,5 +1,6 @@
 package core.state;
 
+import dotPlot.DotMatrix;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -20,7 +21,7 @@ public class DotPlotState extends BasicGameState {
 
     private StateBasedGame sbg;
 
-    //fields
+    private DotMatrix dotMatrix;
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.sbg = sbg;
