@@ -4,9 +4,12 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
 import sequence.*;
 
+import static core.Main.getScreenWidth;
+import static core.Main.getScreenHeight;
+
 public class DotMatrix {
-    private static final float TOP_LEFT_X = 50;
-    private static final float TOP_LEFT_Y = 50;
+    private static final float X_MARGIN = 50;
+    private static final float Y_MARGIN = 50;
     private Sequence seq1, seq2;
     private Cell[][] cells;
 
@@ -29,11 +32,12 @@ public class DotMatrix {
             seq1 = new Sequence(seqStr1);
             seq2 = new Sequence(seqStr2);
         }
-        cells = new Cell[seq1.length()][seq2.length()];
+        cells = new Cell[seq1.length() + 1][seq2.length() + 1];
+        Cell.sideLength = (getScreenHeight() - 2 * Y_MARGIN) / cells[0].length;
 
-        // TODO: Replace this loop with an actual system for initializing the cells with the provided sequence
-        for (int i = 0; i < seq1.length(); i++) {
-            for (int j = 0; j < seq2.length(); j++) {
+        // TODO: Replace this loop with an actual system for initializing the cells with the provided sequences
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[0].length; j++) {
                 cells[i][j] = new Cell(i, j);
             }
         }
@@ -41,16 +45,16 @@ public class DotMatrix {
 
     public void render(Graphics g) {
         g.setColor(Color.white);
-        g.fillRect(TOP_LEFT_X, TOP_LEFT_Y, seq1.length() * Cell.SIDE_LENGTH, seq2.length() * Cell.SIDE_LENGTH);
-        for (int i = 0; i < seq1.length(); i++) {
-            for (int j = 0; j < seq2.length(); j++) {
+        g.fillRect(X_MARGIN, Y_MARGIN, cells.length * Cell.sideLength, cells[0].length * Cell.sideLength);
+        for (int i = 0; i < cells.length; i++) {
+            for (int j = 0; j < cells[0].length; j++) {
                 cells[i][j].render(g);
             }
         }
     }
 
-    private class Cell {
-        private static final float SIDE_LENGTH = 50;
+    private static class Cell {
+        private static float sideLength; // Initialized separately in DotMatrix constructor
         private String text;
         private int gx, gy;
 
@@ -66,7 +70,7 @@ public class DotMatrix {
 
         private void render(Graphics g) {
             g.setColor(Color.black);
-            g.drawRect(TOP_LEFT_X + SIDE_LENGTH * gx, TOP_LEFT_Y + SIDE_LENGTH * gy, SIDE_LENGTH, SIDE_LENGTH);
+            g.drawRect(X_MARGIN + sideLength * gx, Y_MARGIN + sideLength * gy, sideLength, sideLength);
         }
     }
 }

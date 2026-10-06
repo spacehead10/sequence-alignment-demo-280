@@ -7,6 +7,7 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import sequence.Sequence;
 
 public class DotPlotState extends BasicGameState {
     private int id;
@@ -25,12 +26,15 @@ public class DotPlotState extends BasicGameState {
 
     public void init(GameContainer gc, StateBasedGame sbg) throws SlickException {
         this.sbg = sbg;
+        // TODO: Remove this after making an actual system for creating a dot matrix with user-selected sequences
+        dotMatrix = new DotMatrix("ABCDEFG", "ABCDE", Sequence.class);
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
     }
 
     public void render(GameContainer gc, StateBasedGame sbg, Graphics g) throws SlickException {
+        dotMatrix.render(g);
     }
 
     public void enter(GameContainer gc, StateBasedGame sbg) throws SlickException {
