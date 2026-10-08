@@ -1,43 +1,50 @@
 package dotPlot;
 
+import core.Media;
 import org.newdawn.slick.Color;
 import org.newdawn.slick.Graphics;
+import org.newdawn.slick.Input;
 import sequence.*;
 
-import static core.Main.getScreenWidth;
 import static core.Main.getScreenHeight;
 
 public class DotMatrix {
     private static final float X_MARGIN = 50;
     private static final float Y_MARGIN = 50;
-    private Sequence seq1, seq2;
+    private Sequence seqH, seqV; // Horizontal and vertical sequences
     private Cell[][] cells;
 
-    public DotMatrix(Sequence seq1, Sequence seq2) {
-        this.seq1 = seq1;
-        this.seq2 = seq2;
-        cells = new Cell[seq1.length()][seq2.length()];
+    public DotMatrix(Sequence seqH, Sequence seqV) {
+        this.seqH = seqH;
+        this.seqV = seqV;
+        cells = new Cell[seqH.length()][seqV.length()];
     }
 
-    public DotMatrix(String seqStr1, String seqStr2, Class<? extends Sequence> seqType) {
+    public DotMatrix(String seqStrH, String seqStrV, Class<? extends Sequence> seqType) {
         if (seqType.equals(NucleotideSequence.class)) {
-            seq1 = new NucleotideSequence(seqStr1);
-            seq2 = new NucleotideSequence(seqStr2);
+            seqH = new NucleotideSequence(seqStrH);
+            seqV = new NucleotideSequence(seqStrV);
         }
         else if (seqType.equals(AminoAcidSequence.class)) {
-            seq1 = new AminoAcidSequence(seqStr1);
-            seq2 = new AminoAcidSequence(seqStr2);
+            seqH = new AminoAcidSequence(seqStrH);
+            seqV = new AminoAcidSequence(seqStrV);
         }
         else {
-            seq1 = new Sequence(seqStr1);
-            seq2 = new Sequence(seqStr2);
+            seqH = new Sequence(seqStrH);
+            seqV = new Sequence(seqStrV);
         }
-        cells = new Cell[seq1.length() + 1][seq2.length() + 1];
+        cells = new Cell[seqH.length() + 1][seqV.length() + 1];
         Cell.sideLength = (getScreenHeight() - 2 * Y_MARGIN) / cells[0].length;
 
-        // TODO: Replace this loop with an actual system for initializing the cells with the provided sequences
-        for (int i = 0; i < cells.length; i++) {
-            for (int j = 0; j < cells[0].length; j++) {
+        cells[0][0] = new Cell(0, 0);
+        for (int i = 0; i < seqH.length(); i++) {
+            cells[i + 1][0] = new Cell(seqH.letterAt(i), i + 1, 0);
+        }
+        for (int j = 0; j < seqV.length(); j++) {
+            cells[0][j + 1] = new Cell(seqV.letterAt(j), 0, j + 1);
+        }
+        for (int i = 1; i < cells.length; i++) {
+            for (int j = 1; j < cells[0].length; j++) {
                 cells[i][j] = new Cell(i, j);
             }
         }
@@ -53,15 +60,33 @@ public class DotMatrix {
         }
     }
 
+    public void keyPressed(int key) {
+        if (key == Input.KEY_ENTER) {
+            completeAll();
+        }
+    }
+
+    private void completeAll() {
+        for (int i = 0; i < seqH.length(); i++) {
+            for (int j = 0; j < seqV.length(); j++) {
+                if (seqH.letterAt(i).equals(seqV.letterAt(j))) {
+                    cells[i + 1][j + 1].hasDot = true;
+                }
+            }
+        }
+    }
+
     private static class Cell {
         private static float sideLength; // Initialized separately in DotMatrix constructor
         private String text;
         private int gx, gy;
+        private boolean hasDot;
 
         private Cell(String text, int gx, int gy) {
             this.text = text;
             this.gx = gx;
             this.gy = gy;
+            hasDot = false;
         }
 
         private Cell(int gx, int gy) {
@@ -69,8 +94,30 @@ public class DotMatrix {
         }
 
         private void render(Graphics g) {
+            if (hasDot) {
+                if (gx == gy) { // Highlight the diagonal pattern of a match
+                    g.setColor(Color.blue);
+                }
+                else {
+                    g.setColor(Color.black);
+                }
+                g.fillRect(px(), py(), sideLength, sideLength);
+            }
+            else if (!text.isBlank()) {
+                g.setColor(Color.black);
+                Media.drawAlignedString(text, px() + sideLength / 2, py() + sideLength / 2, Media.CENTER, Media.CENTER,
+                        Media.font32, g);
+            }
             g.setColor(Color.black);
-            g.drawRect(X_MARGIN + sideLength * gx, Y_MARGIN + sideLength * gy, sideLength, sideLength);
+            g.drawRect(px(), py(), sideLength, sideLength);
+        }
+
+        private float px() {
+            return X_MARGIN + sideLength * gx;
+        }
+
+        private float py() {
+            return Y_MARGIN + sideLength * gy;
         }
     }
 }

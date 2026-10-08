@@ -5,10 +5,11 @@ import org.newdawn.slick.Color;
 import org.newdawn.slick.TrueTypeFont;
 import org.newdawn.slick.SlickException;
 
+import java.awt.*;
 import java.io.FileNotFoundException;
 
 public class Media {
-    //fonts here
+    public static final TrueTypeFont font32 = new TrueTypeFont(new Font("Trebuchet MS", Font.PLAIN, 32), false);
 
     //images here
 
@@ -28,13 +29,14 @@ public class Media {
 
     /**
      * Draws aligned text.
-     * @param str String to draw
-     * @param x Position based on your chosen alignment
-     * @param y Position based on your chosen alignment
+     *
+     * @param str    String to draw
+     * @param x      Position based on your chosen alignment
+     * @param y      Position based on your chosen alignment
      * @param xAlign Media.LEFT, Media.CENTER, or Media.RIGHT
      * @param yAlign Media.TOP, Media.CENTER, or Media.BOTTOM
-     * @param font Font to use
-     * @param g Pass the graphics object your drawing method is using
+     * @param font   Font to use
+     * @param g      Pass the graphics object your drawing method is using
      */
     public static void drawAlignedString(String str, float x, float y, int xAlign, int yAlign, TrueTypeFont font, Graphics g) {
         float adjustedX, adjustedY;
