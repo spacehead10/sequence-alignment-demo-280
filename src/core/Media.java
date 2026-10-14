@@ -9,6 +9,7 @@ import java.awt.*;
 import java.io.FileNotFoundException;
 
 public class Media {
+    public static final TrueTypeFont font16 = new TrueTypeFont(new Font("Trebuchet MS", Font.PLAIN, 16), false);
     public static final TrueTypeFont font32 = new TrueTypeFont(new Font("Trebuchet MS", Font.PLAIN, 32), false);
 
     //images here

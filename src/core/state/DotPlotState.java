@@ -25,7 +25,8 @@ public class DotPlotState extends BasicGameState {
         this.sbg = sbg;
         // TODO: Remove this after making an actual system for creating a dot matrix with user-selected sequences
         dotMatrix = new DotMatrix("ACTAGTGTATTAGC", "ACTAGTTATGTAGC", NucleotideSequence.class);
-//        dotMatrix = new DotMatrix("ACTAGTGTATTAGC", "ACTAGTGTATTAGC", NucleotideSequence.class);
+//        dotMatrix = new DotMatrix("ACTAGTGTATTAGC", "ACTAGTGT", NucleotideSequence.class);
+//        dotMatrix = new DotMatrix("ACTAGTGT", "ACTAGTGTATTAGC", NucleotideSequence.class);
     }
 
     public void update(GameContainer gc, StateBasedGame sbg, int delta) throws SlickException {
