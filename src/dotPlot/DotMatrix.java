@@ -14,16 +14,28 @@ public class DotMatrix {
     private Sequence seqH, seqV; // Horizontal and vertical sequences
     private Cell[][] cells;
     private int xStep, yStep;
+    private int window;
+    private int mismatchLim;
 
     public DotMatrix(Sequence seqH, Sequence seqV) {
+        this(seqH, seqV, 1, 0);
+    }
+
+    public DotMatrix(Sequence seqH, Sequence seqV, int window, int mismatchLim) {
         this.seqH = seqH;
         this.seqV = seqV;
         cells = new Cell[seqH.length()][seqV.length()];
         xStep = 0;
         yStep = 0;
+        this.window = window;
+        this.mismatchLim = mismatchLim;
     }
 
     public DotMatrix(String seqStrH, String seqStrV, Class<? extends Sequence> seqType) {
+        this(seqStrH, seqStrV, seqType, 1, 0);
+    }
+
+    public DotMatrix(String seqStrH, String seqStrV, Class<? extends Sequence> seqType, int window, int mismatchLim) {
         if (seqType.equals(NucleotideSequence.class)) {
             seqH = new NucleotideSequence(seqStrH);
             seqV = new NucleotideSequence(seqStrV);
@@ -54,6 +66,8 @@ public class DotMatrix {
 
         xStep = 0;
         yStep = 0;
+        this.window = window;
+        this.mismatchLim = mismatchLim;
     }
 
     public void render(Graphics g) {
