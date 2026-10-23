@@ -16,6 +16,9 @@ public class DotMatrix {
     private int xStep, yStep;
     private final int window;
     private final int mismatchLim;
+    private boolean completingTimed;
+    private int completionTimer;
+    private final static int TIMED_COMPLETION_SPACING = 15;
 
     public DotMatrix(Sequence seqH, Sequence seqV) {
         this(seqH, seqV, 1, 0);
@@ -29,6 +32,8 @@ public class DotMatrix {
         yStep = 0;
         this.window = window;
         this.mismatchLim = mismatchLim;
+        completingTimed = false;
+        completionTimer = 0;
     }
 
     public DotMatrix(String seqStrH, String seqStrV, Class<? extends Sequence> seqType) {
@@ -68,6 +73,17 @@ public class DotMatrix {
         yStep = 0;
         this.window = window;
         this.mismatchLim = mismatchLim;
+        completingTimed = false;
+        completionTimer = 0;
+    }
+
+    public void update() {
+        if (completingTimed) {
+            if (completionTimer % TIMED_COMPLETION_SPACING == 0) {
+                completeStep();
+            }
+            completionTimer++;
+        }
     }
 
     public void render(Graphics g) {
@@ -107,7 +123,18 @@ public class DotMatrix {
     public void keyPressed(int key) {
         switch (key) {
             case Input.KEY_ENTER -> completeAll();
-            case Input.KEY_DOWN -> completeStep();
+            case Input.KEY_DOWN -> {
+                if (!completingTimed) {
+                    completeStep();
+                }
+            }
+            case Input.KEY_TAB -> completeTimed();
+        }
+    }
+
+    private void completeAll() {
+        while (xStep < seqH.length()) {
+            completeStep();
         }
     }
 
@@ -126,10 +153,8 @@ public class DotMatrix {
         }
     }
 
-    private void completeAll() {
-        while (xStep < seqH.length()) {
-            completeStep();
-        }
+    private void completeTimed() {
+        completingTimed = true;
     }
 
     private static class Cell {
