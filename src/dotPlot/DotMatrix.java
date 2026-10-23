@@ -9,13 +9,13 @@ import sequence.*;
 import static core.Main.getScreenHeight;
 
 public class DotMatrix {
-    private static final float X_MARGIN = 50;
-    private static final float Y_MARGIN = 50;
-    private Sequence seqH, seqV; // Horizontal and vertical sequences
+    public static final float X_MARGIN = 50;
+    public static final float Y_MARGIN = 50;
+    private final Sequence seqH, seqV; // Horizontal and vertical sequences
     private Cell[][] cells;
     private int xStep, yStep;
-    private int window;
-    private int mismatchLim;
+    private final int window;
+    private final int mismatchLim;
 
     public DotMatrix(Sequence seqH, Sequence seqV) {
         this(seqH, seqV, 1, 0);
